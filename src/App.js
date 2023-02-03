@@ -1,11 +1,13 @@
-import { Chessboard } from "react-chessboard";
+import Board from "./components/Board";
 
 function App() {
   return (
-    <div>
-      <Chessboard id="BasicBoard" />
-    </div>
+    <>
+      <Board></Board>
+    </>
   );
+
+
 }
 
 export default App;
