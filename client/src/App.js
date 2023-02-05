@@ -6,8 +6,6 @@ function App() {
       <Board></Board>
     </>
   );
-
-
 }
 
 export default App;
