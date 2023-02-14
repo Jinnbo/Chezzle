@@ -14,19 +14,42 @@ mongoose.connect(
     .then(() => {
         console.log("Connected to MongoDB")
     })
-    .catch((err) => console.log("A: " + err))
+    .catch((err) => console.log(err))
 
-// Write a script that saves the lichessPuzzles and upload onto mongdoDb
+const csv = require('csv-parser');
+const fs = require('fs');
+const results = [];
 
-/*
-async function run(){
-    
-    const puzzle = new Puzzle({
+fs.createReadStream('./assets/lichessPuzzles.csv')
+    .pipe(csv({}))
+    .on('data', (data) => results.push(data))
+    .on('end', async () => {
         
-        
-    })
-    await puzzle.save()
-    console.log(puzzle )
-}
-*/
+        var count = 1;
+
+        // Iterate through results and store it as a Puzzle
+        for (var i=0;i<results.length;i++){
+            const puzzle = new Puzzle({
+                PuzzleId: results[i].PuzzleId,
+                FEN: results[i].FEN,
+                Moves: results[i].Moves,
+                Rating: results[i].Rating,
+                RatingDeviation: results[i].RatingDeviation,
+                Popularity: results[i].Popularity,
+                NbPlays: results[i].NbPlays,
+                Themes: results[i].Themes,
+                GameUrl: results[i].GameUrl,
+                OpeningFamily: results[i].OpeningFamily,
+                OpeningVariation: results[i].OpeningVariation 
+            })
+            await puzzle.save();
+            if (i % 10000 == 0){
+                console.log("Percent: " + count);
+                count++;
+                
+            }
+        }
+    });
+
+
 

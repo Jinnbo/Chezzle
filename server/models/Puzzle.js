@@ -15,3 +15,5 @@ const puzzleSchema = new mongoose.Schema({
 })
 
 module.exports = mongoose.model("Puzzles", puzzleSchema)
+
+
