@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "GITHUBSTUDENT50-AZPFEI",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Jinnbo/chessmoves.git"
@@ -21,6 +20,7 @@
   },
   "dependencies": {
     "chess.js": "^1.0.0-beta.3",
+    "mongodb": "^5.0.1",
     "react-chessboard": "^2.0.8"
   }
 }
