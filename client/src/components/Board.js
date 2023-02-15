@@ -2,6 +2,7 @@ import React, {Component,useState} from 'react';
 import {Chess} from "chess.js";
 import { Chessboard } from "react-chessboard";
 import './Board.css';
+import axios from "axios";
 
 export default function Board(){
 
@@ -17,6 +18,15 @@ export default function Board(){
         return result; 
     }
 
+    function getMateIn2(){
+        axios.get("http://localhost:5000/puzzles/mateIn2", {crossdomain: true
+        }).then(response => {
+
+            //const gameCopy = new Chess(response.data[4].FEN);
+            //setGame(gameCopy);
+        })
+    }
+
     function onDrop(source,target){
         const move = makeAMove({
             from: source,
@@ -24,7 +34,9 @@ export default function Board(){
             promotion: 'q',
         });
 
-        if (move === null) return false;
+        if (move === null) {
+            return false;
+        }
         return true;
     }
 
