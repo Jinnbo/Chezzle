@@ -12,18 +12,24 @@ app.get('/', (req, res) => {
 
 app.get('/puzzles/mateIn2', async (req, res) => {
     try{
-        const result = await Puzzle.find(
-            { Themes: {$regex: /^mate/ } }
-        );
+        const result = await Puzzle.aggregate([
+            {
+                $match: {Themes: {$regex: "mate"}}
+            },
+            {
+                $limit: 10
+
+            }
+        ])
+
         res.send(result);
+
     }catch(e){
         res.status(500).send({message: e.message});
     }
 });
 
-
-
-app.listen(3000, async () => {
+app.listen(5000, async () => {
     mongoose.set("strictQuery",false);
     mongoose.connect(
     'mongodb+srv://Jimmy:8dGDYmEBj7AMECoI@cluster0.tn1aa6o.mongodb.net/Puzzles',
