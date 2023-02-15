@@ -2,7 +2,7 @@ import React, {Component,useState} from 'react';
 import {Chess} from "chess.js";
 import { Chessboard } from "react-chessboard";
 import './Board.css';
-import axios from "axios";
+import { mateService } from '../services/mate.service';
 
 export default function Board(){
 
@@ -16,15 +16,6 @@ export default function Board(){
         setGame(gameCopy);
 
         return result; 
-    }
-
-    function getMateIn2(){
-        axios.get("http://localhost:5000/puzzles/mateIn2", {crossdomain: true
-        }).then(response => {
-
-            //const gameCopy = new Chess(response.data[4].FEN);
-            //setGame(gameCopy);
-        })
     }
 
     function onDrop(source,target){
@@ -51,4 +42,3 @@ export default function Board(){
         </>
     );
 }
-
