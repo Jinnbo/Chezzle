@@ -21,6 +21,11 @@ export default function Board(){
         return result; 
     }
 
+    function resetFirstMove(square) {
+        setMoveFrom(square);
+        getMoveOptions(square);
+    }
+
     function onDrop(source,target){
 
         //let data = mateService.getMateIn1();
@@ -34,18 +39,15 @@ export default function Board(){
             promotion: 'q',
         });
 
-        if (move === null) {
-            //resetFirstMove(source);
+        if (move === undefined) {
+            resetFirstMove(source);
             return;
         }
         else{
+            setMoveFrom("");
+            setOptionSquares({});
             return true;
         }
-    }
-
-    function resetMove(){
-        setMoveFrom("");
-        setOptionSquares([]);
     }
 
     function getMoveOptions(square) {
@@ -81,11 +83,6 @@ export default function Board(){
       }
 
     function onSquareClick(square) {
-
-        function resetFirstMove(square) {
-            setMoveFrom(square);
-            getMoveOptions(square);
-        }
         
         if (moveFrom === "") {
             resetFirstMove(square);
