@@ -5,5 +5,4 @@ const router = Router();
 
 router.use("/mate", mateRoutes);
 
-
 export default router;

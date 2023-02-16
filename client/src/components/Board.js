@@ -4,10 +4,14 @@ import { Chessboard } from "react-chessboard";
 import './Board.css';
 import { mateService } from '../services/mate.service';
 
+
 export default function Board(){
 
     const [game, setGame] = useState(new Chess());
-
+    const [optionSquares, setOptionSquares] = useState({});
+    const [rightClickedSquares, setRightClickedSquares] = useState({});
+    const [moveFrom, setMoveFrom] = useState("");
+    
     function makeAMove(move) {
         const gameCopy = new Chess();
         gameCopy.loadPgn(game.pgn())
@@ -17,8 +21,24 @@ export default function Board(){
 
         return result; 
     }
+    
+    function resetFirstMove(square) {
+        setMoveFrom(square);
+        getMoveOptions(square);
+    }
 
     function onDrop(source,target){
+
+        //let data = mateService.getMateIn1();
+        //data.then( (res) =>{
+        //    console.log(res.data[0]);
+        //})
+
+        if (!moveFrom) {
+            resetFirstMove(source);
+            return;
+        }
+
         const move = makeAMove({
             from: source,
             to: target,
@@ -26,17 +46,76 @@ export default function Board(){
         });
 
         if (move === null) {
-            return false;
+            resetFirstMove(source);
+            return;
         }
-        return true;
+        else{
+            setMoveFrom("");
+            setOptionSquares({});
+            return true;
+        }
+    }
+
+    function getMoveOptions(square) {
+        const moves = game.moves({
+          square,
+          verbose: true,
+        });
+        if (moves.length === 0) {
+          return;
+        }
+    
+        const newSquares = {};
+        moves.map((move) => {
+          newSquares[move.to] = {
+            background:
+              game.get(move.to) && game.get(move.to).color !== game.get(square).color
+                ? "radial-gradient(circle, rgba(0,0,0,.1) 85%, transparent 85%)"
+                : "radial-gradient(circle, rgba(0,0,0,.1) 25%, transparent 25%)",
+            borderRadius: "50%",
+          };
+          return move;
+        });
+        newSquares[square] = {
+          background: "rgba(255, 255, 0, 0.4)",
+        };
+        setOptionSquares(newSquares);
+      }
+
+    function onSquareClick(square) {
+        
+        if (moveFrom === "") {
+            resetFirstMove(square);
+            return;
+        }
+
+        const move = makeAMove({
+            from: moveFrom,
+            to: square,
+            promotion: 'q',
+        });
+
+        if (move === null) {
+            resetFirstMove(square);
+            return;
+        }
+        else{
+            setMoveFrom("");
+            setOptionSquares({});
+            return true;
+        }
     }
 
     return (
         <>  
-            <div className='container'>
+            <div class='boardContainer'>
                 <Chessboard
                     position={game.fen()}
                     onPieceDrop={onDrop}
+                    onSquareClick={onSquareClick}
+                    customSquareStyles={{
+                        ...optionSquares
+                    }}
                 />
             </div>
         </>
