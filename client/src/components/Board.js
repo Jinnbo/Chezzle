@@ -8,8 +8,7 @@ import { mateService } from '../services/mate.service';
 export default function Board(){
 
     const [game, setGame] = useState(new Chess());
-    const [optionSquares, setOptionSquares] = useState({});
-    const [rightClickedSquares, setRightClickedSquares] = useState({});
+    const [optionSquares, setOptionSquares] = useState([]);
     const [moveFrom, setMoveFrom] = useState("");
     
     function makeAMove(move) {
@@ -21,11 +20,6 @@ export default function Board(){
 
         return result; 
     }
-    
-    function resetFirstMove(square) {
-        setMoveFrom(square);
-        getMoveOptions(square);
-    }
 
     function onDrop(source,target){
 
@@ -34,11 +28,6 @@ export default function Board(){
         //    console.log(res.data[0]);
         //})
 
-        if (!moveFrom) {
-            resetFirstMove(source);
-            return;
-        }
-
         const move = makeAMove({
             from: source,
             to: target,
@@ -46,14 +35,17 @@ export default function Board(){
         });
 
         if (move === null) {
-            resetFirstMove(source);
+            //resetFirstMove(source);
             return;
         }
         else{
-            setMoveFrom("");
-            setOptionSquares({});
             return true;
         }
+    }
+
+    function resetMove(){
+        setMoveFrom("");
+        setOptionSquares([]);
     }
 
     function getMoveOptions(square) {
@@ -61,11 +53,17 @@ export default function Board(){
           square,
           verbose: true,
         });
+
+        const newSquares = {};
+
         if (moves.length === 0) {
+            newSquares[square] = {
+                background: "rgba(255, 255, 0, 0.4)",
+              };
+              setOptionSquares(newSquares);
           return;
         }
     
-        const newSquares = {};
         moves.map((move) => {
           newSquares[move.to] = {
             background:
@@ -83,19 +81,29 @@ export default function Board(){
       }
 
     function onSquareClick(square) {
+
+        function resetFirstMove(square) {
+            setMoveFrom(square);
+            getMoveOptions(square);
+        }
         
         if (moveFrom === "") {
             resetFirstMove(square);
             return;
         }
+        
+        try{
+            var move = makeAMove({
+                from: moveFrom,
+                to: square,
+                promotion: 'q',
+            });
+        } catch (e) {
+            console.log(move);
+        }
 
-        const move = makeAMove({
-            from: moveFrom,
-            to: square,
-            promotion: 'q',
-        });
-
-        if (move === null) {
+        
+        if (move === undefined) {
             resetFirstMove(square);
             return;
         }
