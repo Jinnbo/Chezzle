@@ -3,7 +3,7 @@ import Puzzle from '../models/Puzzle.js';
 const getMateIn1 = async => {
     return Puzzle.aggregate([
         {
-            $match: {Themes: {$regex: "mateIn2"}}
+            $match: {Themes: {$regex: "mateIn1"}}
         },
         {
             $limit: 10  

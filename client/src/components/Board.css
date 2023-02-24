@@ -3,3 +3,10 @@
     width: 40%;
     margin: auto;
 }
+
+.randomBTNContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2%;
+}

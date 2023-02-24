@@ -1,9 +1,8 @@
 import React, {Component,useState} from 'react';
 import {Chess} from "chess.js";
 import { Chessboard } from "react-chessboard";
-import './Board.css';
 import { mateService } from '../services/mate.service';
-
+import './Board.css';
 
 export default function Board(){
 
@@ -11,6 +10,14 @@ export default function Board(){
     const [optionSquares, setOptionSquares] = useState([]);
     const [moveFrom, setMoveFrom] = useState("");
     
+    async function setPuzzle(){
+        const puzzle = await mateService.getMateIn1();
+        const randomNumber = Math.floor(Math.random()*puzzle.data.length);
+        const randomFEN = puzzle.data[randomNumber].FEN;
+        setGame(new Chess(randomFEN));
+        console.log(puzzle.data[randomNumber].Moves);
+    }
+
     function makeAMove(move) {
         const gameCopy = new Chess();
         gameCopy.loadPgn(game.pgn())
@@ -99,7 +106,6 @@ export default function Board(){
             console.log(move);
         }
 
-        
         if (move === undefined) {
             resetFirstMove(square);
             return;
@@ -113,6 +119,9 @@ export default function Board(){
 
     return (
         <>  
+            <div class="randomBTNContainer">
+               <button class="btn btn-primary btn-lg" onClick={setPuzzle}> Random Puzzle </button>
+            </div>
             <div class='boardContainer'>
                 <Chessboard
                     position={game.fen()}
