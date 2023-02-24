@@ -6,7 +6,7 @@ const getMateIn1 = async => {
             $match: {Themes: {$regex: "mateIn1"}}
         },
         {
-            $limit: 10  
+            $limit: 100  
         }
     ])
 }

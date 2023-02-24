@@ -1,21 +1,58 @@
-import React, {Component,useState} from 'react';
+import React, {Component,useState, useEffect} from 'react';
 import {Chess} from "chess.js";
 import { Chessboard } from "react-chessboard";
 import { mateService } from '../services/mate.service';
 import './Board.css';
 
-export default function Board(){
+export default function Board(){    
 
+    // Game states
     const [game, setGame] = useState(new Chess());
     const [optionSquares, setOptionSquares] = useState([]);
     const [moveFrom, setMoveFrom] = useState("");
+
+    // Sound effects
+    const moveSound = new Audio('/move.mp3');
+    const captureSound = new Audio('/capture.mp3');
+    const castleSound = new Audio('/castle.mp3');
+    const checkSound = new Audio('/check.mp3');
     
+    useEffect(()=>{
+        if (game.inCheck()) checkSound.play()
+        //else moveSound.play()
+
+        /*
+        
+        
+        
+        */
+
+    },[game])
+
     async function setPuzzle(){
+
+        // Get the puzzle from the database
         const puzzle = await mateService.getMateIn1();
         const randomNumber = Math.floor(Math.random()*puzzle.data.length);
         const randomFEN = puzzle.data[randomNumber].FEN;
-        setGame(new Chess(randomFEN));
-        console.log(puzzle.data[randomNumber].Moves);
+        
+        // Set game to random puzzle
+        const gameCopy = new Chess(randomFEN);
+        game.loadPgn(gameCopy.pgn())
+        setGame(gameCopy);
+
+        // Make the opposing move to the puzzle
+        var correctmoves = puzzle.data[randomNumber].Moves.split(" ");
+
+        const firstMove = {
+            from: correctmoves[0].slice(0,2),
+            to: correctmoves[0].slice(2,4),
+            promotion: 'q',
+        };
+
+        setTimeout(() => {
+            makeAMove(firstMove)
+        }, 1000);
     }
 
     function makeAMove(move) {
@@ -24,7 +61,6 @@ export default function Board(){
 
         const result = gameCopy.move(move);
         setGame(gameCopy);
-
         return result; 
     }
 
@@ -34,11 +70,6 @@ export default function Board(){
     }
 
     function onDrop(source,target){
-
-        //let data = mateService.getMateIn1();
-        //data.then( (res) =>{
-        //    console.log(res.data[0]);
-        //})
 
         const move = makeAMove({
             from: source,
