@@ -11,14 +11,12 @@
     margin: 2%;
 }
 
-.undoBTN,
-.forwardBTN{
+.undoBTN{
     padding: 10px;
     border-radius: 5px;
     background-color: rgb(13,110,253);
 }
 
-.undoBTN:hover,
-.forwardBTN:hover{
+.undoBTN:hover{
     filter: brightness(80%);
 }

@@ -10,7 +10,12 @@ TODO
 - Add the undo btn
 
 LOGIC
-- Display modal when puzzle is solved
+- Display modal when puzzle is solved DONE
+
+User flow
+1. If the move is incorrect
+2. Display modal to the user
+3. Reset the puzzle
 
 */
 
@@ -20,6 +25,8 @@ export default function Board(){
     const [game, setGame] = useState(new Chess());
     const [optionSquares, setOptionSquares] = useState([]);
     const [moveFrom, setMoveFrom] = useState("");
+    const [correctMoves, setCorrectMoves] = useState([]);
+    const [puzzle, setPuzzles] = useState([]);
 
     // Sound effects
     const moveSound = new Audio('/move.mp3');
@@ -28,8 +35,8 @@ export default function Board(){
     const checkSound = new Audio('/check.mp3');
     
     useEffect(()=>{
-        if (game.inCheck()) checkSound.play()
-        else moveSound.play()
+        //if (game.inCheck()) checkSound.play()
+        //else moveSound.play()
 
         if (game.isCheckmate()){
             window.onload = setTimeout(function(){
@@ -40,13 +47,20 @@ export default function Board(){
 
     },[game])
 
-    async function setPuzzle(){
-
+    useEffect(()=>{
         // Get the puzzle from the database
-        const puzzle = await mateService.getMateIn1();
+        const getPuzzles = async () => {
+            const puzzles = await mateService.getMateIn1();
+            setPuzzles(puzzles);
+        };
+        getPuzzles();
+    },[])   
+
+    function setPuzzle(){
+
         const randomNumber = Math.floor(Math.random()*puzzle.data.length);
         const randomFEN = puzzle.data[randomNumber].FEN;
-        
+
         // Set game to random puzzle
         const gameCopy = new Chess(randomFEN);
         game.loadPgn(gameCopy.pgn())
@@ -61,9 +75,11 @@ export default function Board(){
             promotion: 'q',
         };
 
+        setCorrectMoves(correctmoves.slice(1));
+
         setTimeout(() => {
             makeAMove(firstMove)
-        }, 1000);
+        }, 1200);
     }
 
     function makeAMove(move) {
@@ -81,6 +97,10 @@ export default function Board(){
     }
 
     function onDrop(source,target){
+        
+        // Check if it is the correct move
+        console.log(correctMoves);
+
 
         const move = makeAMove({
             from: source,
@@ -133,10 +153,15 @@ export default function Board(){
 
     function onSquareClick(square) {
         
+        
+        
         if (moveFrom === "") {
             resetFirstMove(square);
             return;
         }
+        
+        // Check if it is the correct move
+        // If it is true then display message and reset puzzle
         
         try{
             var move = makeAMove({
@@ -144,6 +169,16 @@ export default function Board(){
                 to: square,
                 promotion: 'q',
             });
+            if (checkCorectMove(square)){
+                setTimeout(() => {
+                    undoMove();
+                    setTimeout(() => {
+                        alert('Incorrect move');
+                    }, 500);
+                }, 500);
+
+                return;
+            } 
         } catch (e) {
             console.log(move);
         }
@@ -159,20 +194,27 @@ export default function Board(){
         }
     }
 
+    function undoMove(){
+        const gameCopy = new Chess();
+        gameCopy.loadPgn(game.pgn())
+        gameCopy.undo();
+        setGame(gameCopy);
+    }
+
+    function checkCorectMove(move){
+        var playerMove = moveFrom + move;
+        return (playerMove == correctMoves[0] ? false : true); 
+    }
+
     return (
         <>  
             <div className='topBTNS'>
                 <div class="randomBTNContainer">
                    <button class="btn btn-primary btn-lg" onClick={setPuzzle}> Random Puzzle </button>
                 </div>
-                <div className="undoBTN">
+                <div className="undoBTN" onClick={undoMove}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                    </svg>
-                </div>
-                <div className="forwardBTN">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
                     </svg>
                 </div>
             </div>
