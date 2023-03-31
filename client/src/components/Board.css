@@ -4,9 +4,21 @@
     margin: auto;
 }
 
-.randomBTNContainer{
+.topBTNS{
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content:center;
+    gap: 3%;
     margin: 2%;
+}
+
+.undoBTN,
+.forwardBTN{
+    padding: 10px;
+    border-radius: 5px;
+    background-color: rgb(13,110,253);
+}
+
+.undoBTN:hover,
+.forwardBTN:hover{
+    filter: brightness(80%);
 }
