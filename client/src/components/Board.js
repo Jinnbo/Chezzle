@@ -26,7 +26,8 @@ export default function Board(){
     const [optionSquares, setOptionSquares] = useState([]);
     const [moveFrom, setMoveFrom] = useState("");
     const [correctMoves, setCorrectMoves] = useState([]);
-    const [puzzle, setPuzzles] = useState([]);
+    const [puzzles, setPuzzles] = useState([]);
+    const [curPuzzleNumber,setCurPuzzleNumber] = useState(0);
 
     // Sound effects
     const moveSound = new Audio('/move.mp3');
@@ -37,49 +38,53 @@ export default function Board(){
     useEffect(()=>{
         //if (game.inCheck()) checkSound.play()
         //else moveSound.play()
-
         if (game.isCheckmate()){
-            window.onload = setTimeout(function(){
+            setCurPuzzleNumber(curPuzzleNumber => curPuzzleNumber + 1)
+        }
+    },[game])
+    
+    useEffect(()=>{        
+        if (curPuzzleNumber > 0){
+            setTimeout(() => {
                 alert('Complete');
                 setPuzzle();
             }, 1000); 
         }
-
-    },[game])
+    },[curPuzzleNumber])
 
     useEffect(()=>{
+
         // Get the puzzle from the database
         const getPuzzles = async () => {
-            const puzzles = await mateService.getMateIn1();
-            setPuzzles(puzzles);
+            const data = await mateService.getMateIn1();
+            setPuzzles(data);
         };
         getPuzzles();
     },[])   
 
     function setPuzzle(){
-
-        const randomNumber = Math.floor(Math.random()*puzzle.data.length);
-        const randomFEN = puzzle.data[randomNumber].FEN;
-
+        const randomFEN = puzzles.data[curPuzzleNumber].FEN;
+        
         // Set game to random puzzle
         const gameCopy = new Chess(randomFEN);
         game.loadPgn(gameCopy.pgn())
         setGame(gameCopy);
-
+        
         // Make the opposing move to the puzzle
-        var correctmoves = puzzle.data[randomNumber].Moves.split(" ");
+        var correctmoves = puzzles.data[curPuzzleNumber].Moves.split(" ");
 
         const firstMove = {
             from: correctmoves[0].slice(0,2),
             to: correctmoves[0].slice(2,4),
             promotion: 'q',
         };
-
+        
         setCorrectMoves(correctmoves.slice(1));
 
         setTimeout(() => {
             makeAMove(firstMove)
         }, 1200);
+    
     }
 
     function makeAMove(move) {
@@ -97,16 +102,22 @@ export default function Board(){
     }
 
     function onDrop(source,target){
-        
-        // Check if it is the correct move
-        console.log(correctMoves);
-
 
         const move = makeAMove({
             from: source,
             to: target,
             promotion: 'q',
         });
+
+        if ((source+target) !== correctMoves[0]){
+            setTimeout(() => {
+                alert('Incorrect move');
+                setTimeout(() => {
+                    setPuzzle();
+                }, 1000);
+            }, 500);
+            return;
+        } 
 
         if (move === undefined) {
             resetFirstMove(source);
@@ -153,35 +164,26 @@ export default function Board(){
 
     function onSquareClick(square) {
         
-        
-        
         if (moveFrom === "") {
             resetFirstMove(square);
             return;
         }
         
-        // Check if it is the correct move
-        // If it is true then display message and reset puzzle
-        
-        try{
-            var move = makeAMove({
-                from: moveFrom,
-                to: square,
-                promotion: 'q',
-            });
-            if (checkCorectMove(square)){
-                setTimeout(() => {
-                    undoMove();
-                    setTimeout(() => {
-                        alert('Incorrect move');
-                    }, 500);
-                }, 500);
+        var move = makeAMove({
+            from: moveFrom,
+            to: square,
+            promotion: 'q',
+        });
 
-                return;
-            } 
-        } catch (e) {
-            console.log(move);
-        }
+        if (checkCorectMove(square)){
+            setTimeout(() => {
+                alert('Incorrect move');
+                setTimeout(() => {
+                    setPuzzle();
+                }, 1000);
+            }, 500);
+            return;
+        } 
 
         if (move === undefined) {
             resetFirstMove(square);
@@ -210,7 +212,7 @@ export default function Board(){
         <>  
             <div className='topBTNS'>
                 <div class="randomBTNContainer">
-                   <button class="btn btn-primary btn-lg" onClick={setPuzzle}> Random Puzzle </button>
+                   <button class="btn btn-primary btn-lg" onClick={setPuzzle}> Start </button>
                 </div>
                 <div className="undoBTN" onClick={undoMove}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
