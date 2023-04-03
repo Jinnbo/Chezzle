@@ -1,22 +1,27 @@
-.boardContainer{
-    height: 40%;
-    width: 40%;
-    margin: auto;
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5%;
 }
 
-.topBTNS{
+.progressBarContainer{
     display: flex;
-    justify-content:center;
-    gap: 3%;
+    flex-direction: column;
+    align-items: center;
     margin: 2%;
 }
 
-.undoBTN{
-    padding: 10px;
-    border-radius: 5px;
-    background-color: rgb(13,110,253);
+.progressBar{
+    min-width: 60%;
 }
 
-.undoBTN:hover{
-    filter: brightness(80%);
+.boardContainer{
+    height: 40%;
+    width: 40%;
 }
+
+.BTNSContainer{
+    margin-left: 5%;
+}
+

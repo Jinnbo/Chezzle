@@ -1,4 +1,5 @@
 import React, {Component,useState, useEffect} from 'react';
+import ProgressBar from 'react-bootstrap/ProgressBar';
 import {Chess} from "chess.js";
 import { Chessboard } from "react-chessboard";
 import { mateService } from '../services/mate.service';
@@ -7,10 +8,8 @@ import './Board.css';
 /*
 TODO
 - Add sound effects for all moves
-- Add the undo btn
 
 LOGIC
-- Display modal when puzzle is solved DONE
 
 User flow
 1. If the move is incorrect
@@ -36,11 +35,14 @@ export default function Board(){
     const checkSound = new Audio('/check.mp3');
     
     useEffect(()=>{
-        //if (game.inCheck()) checkSound.play()
         //else moveSound.play()
         if (game.isCheckmate()){
-            setCurPuzzleNumber(curPuzzleNumber => curPuzzleNumber + 1)
+            checkSound.play();
+            setCurPuzzleNumber(curPuzzleNumber => curPuzzleNumber + 1);
+        } else {
+            moveSound.play();
         }
+
     },[game])
     
     useEffect(()=>{        
@@ -96,28 +98,27 @@ export default function Board(){
         return result; 
     }
 
-    function resetFirstMove(square) {
-        setMoveFrom(square);
-        getMoveOptions(square);
-    }
+    async function onDrop(source,target){
 
-    function onDrop(source,target){
+        try{
+            var move = await makeAMove({
+                from: source,
+                to: target,
+                promotion: 'q',
+            });
 
-        const move = makeAMove({
-            from: source,
-            to: target,
-            promotion: 'q',
-        });
-
-        if ((source+target) !== correctMoves[0]){
-            setTimeout(() => {
-                alert('Incorrect move');
+            if ((source+target) !== correctMoves[0]){
+                setOptionSquares({});
                 setTimeout(() => {
-                    setPuzzle();
-                }, 1000);
-            }, 500);
-            return;
-        } 
+                    alert('Incorrect move');
+                    setTimeout(() => {
+                        setPuzzle();
+                    }, 1000);
+                }, 500);
+                return;
+            }
+
+        } catch(e){}
 
         if (move === undefined) {
             resetFirstMove(source);
@@ -160,30 +161,39 @@ export default function Board(){
           background: "rgba(255, 255, 0, 0.4)",
         };
         setOptionSquares(newSquares);
-      }
+    }
 
-    function onSquareClick(square) {
+    function resetFirstMove(square) {
+        getMoveOptions(square);
+        setMoveFrom(square);
+    }
+
+
+    async function onSquareClick(square) {
         
         if (moveFrom === "") {
             resetFirstMove(square);
             return;
         }
         
-        var move = makeAMove({
-            from: moveFrom,
-            to: square,
-            promotion: 'q',
-        });
+        try{
+            var move = await makeAMove({
+                from: moveFrom,
+                to: square,
+                promotion: 'q',
+            });
 
-        if (checkCorectMove(square)){
-            setTimeout(() => {
-                alert('Incorrect move');
+            if ((moveFrom+square) !== correctMoves[0]){
+                setOptionSquares({});
                 setTimeout(() => {
-                    setPuzzle();
-                }, 1000);
-            }, 500);
-            return;
-        } 
+                    alert('Incorrect move');
+                    setTimeout(() => {
+                        setPuzzle();
+                    }, 1000);
+                }, 500);
+                return;
+            }
+        } catch(e){}
 
         if (move === undefined) {
             resetFirstMove(square);
@@ -203,32 +213,30 @@ export default function Board(){
         setGame(gameCopy);
     }
 
-    function checkCorectMove(move){
-        var playerMove = moveFrom + move;
-        return (playerMove == correctMoves[0] ? false : true); 
-    }
-
     return (
         <>  
-            <div className='topBTNS'>
-                <div class="randomBTNContainer">
-                   <button class="btn btn-primary btn-lg" onClick={setPuzzle}> Start </button>
-                </div>
-                <div className="undoBTN" onClick={undoMove}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                    </svg>
+            <div className='progressBarContainer'>
+                <div className='progressBar'>
+                    <ProgressBar now={curPuzzleNumber*10} animated label={`${curPuzzleNumber*10}%` }></ProgressBar>
                 </div>
             </div>
-            <div class='boardContainer'>
-                <Chessboard
-                    position={game.fen()}
-                    onPieceDrop={onDrop}
-                    onSquareClick={onSquareClick}
-                    customSquareStyles={{
-                        ...optionSquares
-                    }}
-                />
+            <div className="container">
+                <div class='boardContainer'>
+                    <Chessboard
+                        position={game.fen()}
+                        onPieceDrop={onDrop}
+                        onSquareClick={onSquareClick}
+                        customSquareStyles={{
+                            ...optionSquares
+                        }}
+                        />
+                </div>
+
+                <div className='BTNSContainer'>
+                    <div class="startBTNContainer">
+                       <button class="btn btn-primary btn-lg" onClick={setPuzzle}> Start </button>
+                    </div>
+                </div>
             </div>
         </>
     );
