@@ -81,9 +81,29 @@
 }
 
 .boardContainer{
+    height: 100%;
+    width: 100%;
+    border: 1px ;
     min-height: 89%;
     min-width: 89%;
 }
 
+.rightContainer{
+    border: 1px black solid;
+    height: auto;
+    width: 40vw;
+    margin-top: 2%;
+}
 
+.startBTN{
+    border-style: none;
+    padding: 2vh 5vw 2vh 5vw;
+    border-radius: 10px;
+    font-weight: 500;
+    color: rgba(100, 100, 100, 1);
+}
 
+.startBTN:hover{
+    transform: scale(1.01);
+    background-color: rgb(225,225,225);
+}

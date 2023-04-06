@@ -23,6 +23,7 @@ export default function Board(){
     const [puzzles, setPuzzles] = useState([]);
     const [curPuzzleNumber,setCurPuzzleNumber] = useState(0);
     const [incorrectMoves,setIncorrectMoves] = useState(0);
+    const [startState,setStartState] = useState(true);
 
     // Sound effects
     const moveSound = new Audio('/move.mp3');
@@ -61,6 +62,7 @@ export default function Board(){
     },[])   
 
     function setPuzzle(){
+        setStartState(false);
         const randomFEN = puzzles.data[curPuzzleNumber].FEN;
         
         // Set game to random puzzle
@@ -234,18 +236,23 @@ export default function Board(){
                             <div className='incorrectScore'>{incorrectMoves}</div>
                         </div>
                     </div>
-                    <div>
-                        
+                    <div className='btnContainer'>
+                        <button className='startBTN' onClick={setPuzzle}>{startState === true ? "Start" : "Restart"}</button>
+                       
                     </div>
                 </div>
 
                 <div className='rightContainer'>
+                    {/*
+            
                     <div className='progressBarContainer'>
                         <div className='progressBar'>
                             <ProgressBar now={curPuzzleNumber*10} animated label={`${curPuzzleNumber*10}%` }></ProgressBar>
                         </div>
                     </div>
-                    <div className="container">
+                        */}
+                    
+                   
                         <div class='boardContainer'>
                             <Chessboard
                                 position={game.fen()}
@@ -254,15 +261,10 @@ export default function Board(){
                                 customSquareStyles={{
                                     ...optionSquares
                                 }}
-                                />
+                            />
                         </div>
-
-                        <div className='BTNSContainer'>
-                            <div class="startBTNContainer">
-                            <button class="btn btn-primary btn-lg" onClick={setPuzzle}> Start </button>
-                            </div>
-                        </div>
-                    </div>
+           
+                
                 </div>
             </div>
         </>
