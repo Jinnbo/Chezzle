@@ -11,11 +11,6 @@ TODO
 
 LOGIC
 
-User flow
-1. If the move is incorrect
-2. Display modal to the user
-3. Reset the puzzle
-
 */
 
 export default function Board(){    
@@ -27,6 +22,7 @@ export default function Board(){
     const [correctMoves, setCorrectMoves] = useState([]);
     const [puzzles, setPuzzles] = useState([]);
     const [curPuzzleNumber,setCurPuzzleNumber] = useState(0);
+    const [incorrectMoves,setIncorrectMoves] = useState(0);
 
     // Sound effects
     const moveSound = new Audio('/move.mp3');
@@ -111,6 +107,7 @@ export default function Board(){
                 setOptionSquares({});
                 setTimeout(() => {
                     alert('Incorrect move');
+                    setIncorrectMoves(incorrectMoves => incorrectMoves + 1)
                     setTimeout(() => {
                         setPuzzle();
                     }, 1000);
@@ -187,6 +184,7 @@ export default function Board(){
                 setOptionSquares({});
                 setTimeout(() => {
                     alert('Incorrect move');
+                    setIncorrectMoves(incorrectMoves => incorrectMoves + 1)
                     setTimeout(() => {
                         setPuzzle();
                     }, 1000);
@@ -215,26 +213,55 @@ export default function Board(){
 
     return (
         <>  
-            <div className='progressBarContainer'>
-                <div className='progressBar'>
-                    <ProgressBar now={curPuzzleNumber*10} animated label={`${curPuzzleNumber*10}%` }></ProgressBar>
-                </div>
-            </div>
-            <div className="container">
-                <div class='boardContainer'>
-                    <Chessboard
-                        position={game.fen()}
-                        onPieceDrop={onDrop}
-                        onSquareClick={onSquareClick}
-                        customSquareStyles={{
-                            ...optionSquares
-                        }}
-                        />
+            <div className='outerContainer'>
+
+                <div className='leftContainer'>
+                    <div className='username'>
+                        NAME
+                    </div>
+                    <div className='userIcon'>
+                    </div>
+                    <div className='userRank'>
+                        #1
+                    </div>  
+                    <div className='scoreContainer'>
+                        <div className='correctContainer'>
+                            <img src={require('../assets/correct.png')} className='correctIcon'></img>
+                            <div className='correctScore'>{curPuzzleNumber}</div>
+                        </div>
+                        <div className='incorrectContainer'>
+                            <img src={require('../assets/incorrect.png')} className='incorrectIcon'></img>
+                            <div className='incorrectScore'>{incorrectMoves}</div>
+                        </div>
+                    </div>
+                    <div>
+                        
+                    </div>
                 </div>
 
-                <div className='BTNSContainer'>
-                    <div class="startBTNContainer">
-                       <button class="btn btn-primary btn-lg" onClick={setPuzzle}> Start </button>
+                <div className='rightContainer'>
+                    <div className='progressBarContainer'>
+                        <div className='progressBar'>
+                            <ProgressBar now={curPuzzleNumber*10} animated label={`${curPuzzleNumber*10}%` }></ProgressBar>
+                        </div>
+                    </div>
+                    <div className="container">
+                        <div class='boardContainer'>
+                            <Chessboard
+                                position={game.fen()}
+                                onPieceDrop={onDrop}
+                                onSquareClick={onSquareClick}
+                                customSquareStyles={{
+                                    ...optionSquares
+                                }}
+                                />
+                        </div>
+
+                        <div className='BTNSContainer'>
+                            <div class="startBTNContainer">
+                            <button class="btn btn-primary btn-lg" onClick={setPuzzle}> Start </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
