@@ -1,8 +1,18 @@
-GITHUBSTUDENT50-AZPFEI
+## MVP 
+- [ ] Multiple puzzle options (mate in 1,2,3, pins, forks, skewers, etc)
+- [ ] Error/success message somewhere for each move 
+- [ ] Progress bar
+- [ ] Hint button 
+- [ ] Screen responsiveness 
+- [ ] Host project 
 
-8dGDYmEBj7AMECoI
 
-## TODO
-- Randomly load checkmate games
-- Let the user play the games
-- They can only move if it is the correct move
+### Running client
+    npm start
+
+### Running server
+    npm run server
+
+### API
+    GITHUBSTUDENT50-AZPFEI
+    8dGDYmEBj7AMECoI
