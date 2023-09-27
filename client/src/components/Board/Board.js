@@ -1,8 +1,7 @@
 import React, {Component,useState, useEffect} from 'react';
-import ProgressBar from 'react-bootstrap/ProgressBar';
 import {Chess} from "chess.js";
 import { Chessboard } from "react-chessboard";
-import { mateService } from '../services/mate.service';
+import { mateService } from '../../services/mate.service';
 import './Board.css';
 
 /*
@@ -228,11 +227,11 @@ export default function Board(){
                     </div>  
                     <div className='scoreContainer'>
                         <div className='correctContainer'>
-                            <img src={require('../assets/correct.png')} className='correctIcon'></img>
+                            <img src={require('../../assets/correct.png')} className='correctIcon'></img>
                             <div className='correctScore'>{curPuzzleNumber}</div>
                         </div>
                         <div className='incorrectContainer'>
-                            <img src={require('../assets/incorrect.png')} className='incorrectIcon'></img>
+                            <img src={require('../../assets/incorrect.png')} className='incorrectIcon'></img>
                             <div className='incorrectScore'>{incorrectMoves}</div>
                         </div>
                     </div>
@@ -243,16 +242,6 @@ export default function Board(){
                 </div>
 
                 <div className='rightContainer'>
-                    {/*
-            
-                    <div className='progressBarContainer'>
-                        <div className='progressBar'>
-                            <ProgressBar now={curPuzzleNumber*10} animated label={`${curPuzzleNumber*10}%` }></ProgressBar>
-                        </div>
-                    </div>
-                        */}
-                    
-                   
                         <div class='boardContainer'>
                             <Chessboard
                                 position={game.fen()}
@@ -263,8 +252,6 @@ export default function Board(){
                                 }}
                             />
                         </div>
-           
-                
                 </div>
             </div>
         </>

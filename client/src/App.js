@@ -1,5 +1,5 @@
-import Board from "./components/Board";
-import Navbar from "./components/Navbar";
+import Board from "./components/Board/Board";
+import Navbar from "./components/Navbar/Navbar";
 
 function App() {
   return (
@@ -9,7 +9,5 @@ function App() {
     </>
   );
 }
-
-document.body.style = 'background: rgb(225,225,225);';
 
 export default App;

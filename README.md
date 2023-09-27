@@ -16,3 +16,8 @@
 ### API
     GITHUBSTUDENT50-AZPFEI
     8dGDYmEBj7AMECoI
+
+<br>
+Fold tailwindcss:
+
+- `ctrl+option+a`
