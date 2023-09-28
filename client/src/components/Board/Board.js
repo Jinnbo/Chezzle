@@ -4,14 +4,6 @@ import { Chessboard } from "react-chessboard";
 import { mateService } from '../../services/mate.service';
 import './Board.css';
 
-/*
-TODO
-- Add sound effects for all moves
-
-LOGIC
-
-*/
-
 export default function Board(){    
 
     // Game states
@@ -214,8 +206,20 @@ export default function Board(){
 
     return (
         <>  
-            <div className='outerContainer'>
+            <div className='boardContainer border-2 w-[35vw]'>
+                <Chessboard
+                    position={game.fen()}
+                    onPieceDrop={onDrop}
+                    onSquareClick={onSquareClick}
+                    customSquareStyles={{...optionSquares}}
+                />
+            </div>
+        </>
+    );
+}
 
+
+/*
                 <div className='leftContainer'>
                     <div className='username'>
                         NAME
@@ -241,19 +245,4 @@ export default function Board(){
                     </div>
                 </div>
 
-                <div className='rightContainer'>
-                        <div class='boardContainer'>
-                            <Chessboard
-                                position={game.fen()}
-                                onPieceDrop={onDrop}
-                                onSquareClick={onSquareClick}
-                                customSquareStyles={{
-                                    ...optionSquares
-                                }}
-                            />
-                        </div>
-                </div>
-            </div>
-        </>
-    );
-}
+*/
