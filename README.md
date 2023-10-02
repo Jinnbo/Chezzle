@@ -21,3 +21,6 @@
 Fold tailwindcss:
 
 - `ctrl+option+a`
+
+Add comment in jsx:
+- `option+shift+a`
