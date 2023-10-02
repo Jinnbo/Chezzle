@@ -30,7 +30,6 @@ export default function Board(){
         } else {
             moveSound.play();
         }
-
     },[game])
     
     useEffect(()=>{        
@@ -43,7 +42,6 @@ export default function Board(){
     },[curPuzzleNumber])
 
     useEffect(()=>{
-
         // Get the puzzle from the database
         const getPuzzles = async () => {
             const data = await mateService.getMateIn1();

@@ -25,7 +25,7 @@ export default function RightBox(){
                 </div>
 
                 <div className="restart flex justify-center rounded-md w-[16rem] h-[2.5rem] text-[1.5rem]">
-                    Restart
+                    Start
                 </div>
             </div>
         </>
