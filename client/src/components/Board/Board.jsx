@@ -4,7 +4,7 @@ import { Chessboard } from "react-chessboard";
 import { mateService } from '../../services/mate.service';
 import './Board.css';
 
-export default function Board(){    
+export default function Board({category}){    
 
     // Game states
     const [game, setGame] = useState(new Chess());

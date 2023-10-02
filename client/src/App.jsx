@@ -7,14 +7,16 @@ import './global.css'
 
 function App() {
 
+  const [category, setCategory] = useState("Mate in 1");
+
   return (
     <>
       <div className="appContainer">
         <Navbar/>
         <div className="flex justify-around mt-[4rem]">
-          <LeftBox/>
-          <Board/>
-          <RightBox/>
+          <LeftBox setCategory={setCategory}/>
+          <Board category={category}/>
+          <RightBox category={category}/>
         </div>
       </div>  
     </>

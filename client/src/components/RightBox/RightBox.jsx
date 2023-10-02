@@ -1,12 +1,12 @@
 import React, {Component,useState, useEffect} from 'react';
 import './RightBox.css'
 
-export default function RightBox(){
+export default function RightBox({category}){
     return (
         <>
             <div className='flex flex-col justify-around w-[20rem] items-center bg-black rounded-3xl'>
                 <div className="text-white text-4xl font-bold">
-                    Mate in 1
+                    {category}
                 </div>
 
                 <div className="flex justify-center items-center gap-[2rem] w-[5rem] h-[5rem]">
