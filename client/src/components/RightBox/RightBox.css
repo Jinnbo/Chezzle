@@ -1,0 +1,11 @@
+.restart{
+    background-color: rgba(217, 217, 217, 1);
+    color: #646464;
+    font-weight: 800;
+}
+
+.buttons:hover,
+.restart:hover{
+    transform: scale(1.05);
+    cursor: pointer;
+}
