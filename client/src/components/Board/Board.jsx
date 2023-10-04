@@ -4,7 +4,7 @@ import { Chessboard } from "react-chessboard";
 import { mateService } from '../../services/mate.service';
 import './Board.css';
 
-export default function Board({category, start}){    
+export default function Board({category, start, setCorrect, setIncorrect}){    
 
     // Game states
     const [game, setGame] = useState(new Chess());
@@ -32,6 +32,12 @@ export default function Board({category, start}){
         }
     },[game])
     
+    useEffect(() => {
+        setCorrect(curPuzzleNumber)
+        setIncorrect(incorrectMoves)
+    }, [curPuzzleNumber,incorrectMoves]);
+
+
     useEffect(()=>{        
         if (curPuzzleNumber > 0){
             setTimeout(() => {
@@ -41,22 +47,24 @@ export default function Board({category, start}){
         }
     },[curPuzzleNumber])
 
-/*     useEffect(()=>{
-        console.log(start)
-        // Get the puzzle from the database
-        const getPuzzles = async () => {
-            const data = await mateService.getMateIn1();
-            setPuzzles(data);
-        };
-        getPuzzles();
-    },[])    */
-
     useEffect(()=>{
 
         // Get the puzzle from the database
         const getPuzzles = async () => {
-            const data = await mateService.getMateIn1();
-            setPuzzles(data);
+            switch(category){
+                case "Mate in 1":
+                    const data = await mateService.getMateIn1();
+                    setPuzzles(data);
+                    break;
+                case "Mate in 2":
+                    const data2 = await mateService.getMateIn2();
+                    setPuzzles(data2);
+                    break;
+                case "Mate in 3":
+                    const data3 = await mateService.getMateIn3();
+                    setPuzzles(data3);
+                    break;
+            }
         };
         getPuzzles();
         if (start === true){

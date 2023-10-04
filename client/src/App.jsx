@@ -9,6 +9,8 @@ function App() {
 
   const [category, setCategory] = useState("Mate in 1");
   const [start, setStart] = useState(false);
+  const [correct, setCorrect] = useState(0);
+  const [incorrect, setIncorrect] = useState(0);
 
   return (
     <>
@@ -16,8 +18,8 @@ function App() {
         <Navbar/>
         <div className="flex justify-around mt-[4rem]">
           <LeftBox setCategory={setCategory}/>
-          <Board category={category} start={start}/>
-          <RightBox category={category} start={start} setStart={setStart}/>
+          <Board category={category} start={start} setCorrect={setCorrect} setIncorrect={setIncorrect}/>
+          <RightBox category={category} start={start} setStart={setStart} correct={correct} incorrect={incorrect}/>
         </div>
       </div>  
     </>

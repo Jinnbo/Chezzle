@@ -1,7 +1,7 @@
 import React, {Component,useState, useEffect} from 'react';
 import './RightBox.css'
 
-export default function RightBox({category, start, setStart}){
+export default function RightBox({category, start, setStart, correct, incorrect}){
 
     const onButtonClick = () => {
         setStart(!start);
@@ -16,11 +16,11 @@ export default function RightBox({category, start, setStart}){
 
                 <div className="flex justify-center items-center gap-[2rem] w-[5rem] h-[5rem]">
                     <img src='./correct.png'/>
-                    <div className="correctScore text-white text-4xl">0</div>
+                    <div className="correctScore text-white text-4xl">{correct}</div>
                 </div>
                 <div className="flex justify-center items-center gap-[2rem] w-[5rem] h-[5rem]">
                     <img src='./incorrect.png'/>
-                    <div className="incorrectScore text-white text-4xl">0</div>
+                    <div className="incorrectScore text-white text-4xl">{incorrect}</div>
                 </div>
 
                 <div className="flex justify-between w-[16rem]">
