@@ -1,12 +1,17 @@
 import React, {Component,useState, useEffect} from 'react';
 import './RightBox.css'
 
-export default function RightBox({category}){
+export default function RightBox({category, start, setStart}){
+
+    const onButtonClick = () => {
+        setStart(!start);
+    } 
+
     return (
         <>
             <div className='flex flex-col justify-around w-[20rem] items-center bg-black rounded-3xl'>
                 <div className="text-white text-4xl font-bold">
-                    {category}
+                     {category}
                 </div>
 
                 <div className="flex justify-center items-center gap-[2rem] w-[5rem] h-[5rem]">
@@ -24,8 +29,8 @@ export default function RightBox({category}){
                     <img className='buttons w-[4rem] h-[2.5rem]' src='./forward.png'/>
                 </div>
 
-                <div className="restart flex justify-center rounded-md w-[16rem] h-[2.5rem] text-[1.5rem]">
-                    Start
+                <div onClick={()=>onButtonClick()} className="restart flex justify-center rounded-md w-[16rem] h-[2.5rem] text-[1.5rem]">
+                   {start == false ? 'Start' : 'Restart'}
                 </div>
             </div>
         </>

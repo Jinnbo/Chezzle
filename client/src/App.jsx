@@ -8,6 +8,7 @@ import './global.css'
 function App() {
 
   const [category, setCategory] = useState("Mate in 1");
+  const [start, setStart] = useState(false);
 
   return (
     <>
@@ -15,8 +16,8 @@ function App() {
         <Navbar/>
         <div className="flex justify-around mt-[4rem]">
           <LeftBox setCategory={setCategory}/>
-          <Board category={category}/>
-          <RightBox category={category}/>
+          <Board category={category} start={start}/>
+          <RightBox category={category} start={start} setStart={setStart}/>
         </div>
       </div>  
     </>

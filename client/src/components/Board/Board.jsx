@@ -4,7 +4,7 @@ import { Chessboard } from "react-chessboard";
 import { mateService } from '../../services/mate.service';
 import './Board.css';
 
-export default function Board({category}){    
+export default function Board({category, start}){    
 
     // Game states
     const [game, setGame] = useState(new Chess());
@@ -41,14 +41,28 @@ export default function Board({category}){
         }
     },[curPuzzleNumber])
 
-    useEffect(()=>{
+/*     useEffect(()=>{
+        console.log(start)
         // Get the puzzle from the database
         const getPuzzles = async () => {
             const data = await mateService.getMateIn1();
             setPuzzles(data);
         };
         getPuzzles();
-    },[])   
+    },[])    */
+
+    useEffect(()=>{
+
+        // Get the puzzle from the database
+        const getPuzzles = async () => {
+            const data = await mateService.getMateIn1();
+            setPuzzles(data);
+        };
+        getPuzzles();
+        if (start === true){
+            setPuzzle();
+        }
+    },[start])
 
     function setPuzzle(){
         setStartState(false);
@@ -218,6 +232,23 @@ export default function Board({category}){
 
 
 /*
+
+            switch(category){
+                case "Mate in 1":
+                    const data = await mateService.getMateIn1();
+                    setPuzzles(data);
+                    break;
+                case "Mate in 2":
+                    const data2 = await mateService.getMateIn2();
+                    setPuzzles(data2);
+                    break;
+                case "Mate in 3":
+                    const data3 = await mateService.getMateIn3();
+                    setPuzzles(data3);
+                    break;
+            }
+
+
                 <div className='leftContainer'>
                     <div className='username'>
                         NAME
