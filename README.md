@@ -1,8 +1,9 @@
 ## MVP 
 - [ ] Multiple puzzle options (mate in 1,2,3, pins, forks, skewers, etc)
 - [ ] Error/success message somewhere for each move 
-- [ ] Progress bar
 - [ ] Hint button 
+- [ ] Backward button
+- [ ] Forward button 
 - [ ] Screen responsiveness 
 - [ ] Host project 
 
