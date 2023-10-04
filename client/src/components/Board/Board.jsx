@@ -4,7 +4,7 @@ import { Chessboard } from "react-chessboard";
 import { mateService } from '../../services/mate.service';
 import './Board.css';
 
-export default function Board({category, start, setCorrect, setIncorrect}){    
+export default function Board({category, start, setCorrect, setIncorrect, setStart}){    
 
     // Game states
     const [game, setGame] = useState(new Chess());
@@ -36,7 +36,6 @@ export default function Board({category, start, setCorrect, setIncorrect}){
         setCorrect(curPuzzleNumber)
         setIncorrect(incorrectMoves)
     }, [curPuzzleNumber,incorrectMoves]);
-
 
     useEffect(()=>{        
         if (curPuzzleNumber > 0){
@@ -71,6 +70,16 @@ export default function Board({category, start, setCorrect, setIncorrect}){
             setPuzzle();
         }
     },[start])
+
+    // Reset board when switching to new game mode (category)
+    useEffect(()=>{
+        const gameCopy = new Chess();
+        setGame(gameCopy);
+        setStart(false);
+        setCurPuzzleNumber(0);
+        setIncorrectMoves(0);
+    },[category])
+
 
     function setPuzzle(){
         setStartState(false);

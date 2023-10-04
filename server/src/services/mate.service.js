@@ -6,7 +6,7 @@ const getMateIn1 = async => {
             $match: {Themes: {$regex: "mateIn1"}}
         },
         {
-            $limit: 10
+            $limit: 100
         }
     ])
 }
@@ -17,7 +17,7 @@ const getMateIn2 = async => {
             $match: {Themes: {$regex: "mateIn2"}}
         },
         {
-            $limit: 10  
+            $limit: 100 
         }
     ])
 }
@@ -28,7 +28,7 @@ const getMateIn3 = async => {
             $match: {Themes: {$regex: "mateIn3"}}
         },
         {
-            $limit: 10  
+            $limit: 100  
         }
     ])
 }

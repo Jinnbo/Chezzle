@@ -18,7 +18,7 @@ function App() {
         <Navbar/>
         <div className="flex justify-around mt-[4rem]">
           <LeftBox setCategory={setCategory}/>
-          <Board category={category} start={start} setCorrect={setCorrect} setIncorrect={setIncorrect}/>
+          <Board category={category} start={start} setCorrect={setCorrect} setStart={setStart} setIncorrect={setIncorrect}/>
           <RightBox category={category} start={start} setStart={setStart} correct={correct} incorrect={incorrect}/>
         </div>
       </div>  
