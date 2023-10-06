@@ -15,7 +15,6 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
     const [curPuzzleNumber,setCurPuzzleNumber] = useState(0);
     const [incorrectMoves,setIncorrectMoves] = useState(0);
     const [startState,setStartState] = useState(true);
-    const [numOfMoves, setNumOfMoves] = useState(0);
 
     // Sound effects
     const moveSound = new Audio('/move.mp3');
@@ -31,6 +30,7 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
         } else {
             moveSound.play();
         }
+        console.log(game.fen())
     },[game])
     
     useEffect(() => {
@@ -94,36 +94,40 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
         setAutomatedMove();
     }
 
+    const [numOfMoves, setNumOfMoves] = useState(0);
     function setAutomatedMove(){
         var correctmoves = puzzles.data[curPuzzleNumber].Moves.split(" ");
         // Make the opposing move to the puzzle
-
+        
         const move = {
             from: correctmoves[numOfMoves].slice(0,2),
             to: correctmoves[numOfMoves].slice(2,4),
-            promotion: 'q',
-        };
-
+        }; 
+        
+        //console.log(correctmoves,numOfMoves, move)
+        
         setCorrectMoves(correctmoves.slice(1));
-        setNumOfMoves(numOfMoves => numOfMoves + 1)
+        setNumOfMoves(numOfMoves => numOfMoves + 2);
         
         setTimeout(() => {
             makeAMove(move);
         }, 1200);
     } 
 
-    useEffect(()=>{
-        console.log(numOfMoves)
-    },[numOfMoves])
-
 
     function makeAMove(move) {
-        const gameCopy = new Chess();
-        gameCopy.loadPgn(game.pgn())
+        try{
+            const gameCopy = new Chess();
+            gameCopy.load(game.fen())
 
-        const result = gameCopy.move(move);
-        setGame(gameCopy);
-        return result; 
+            console.log(game.moves())
+
+            const result = gameCopy.move(move);
+            setGame(gameCopy);
+            return result; 
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     async function onDrop(source,target){
@@ -135,28 +139,28 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
                 promotion: 'q',
             });
 
-            if ((source+target) !== correctMoves[0]){
-                setOptionSquares({});
+           if ((source+target) !== correctMoves[0]){
+            setOptionSquares({});
+            setTimeout(() => {
+                alert('Incorrect move');
+                setIncorrectMoves(incorrectMoves => incorrectMoves + 1)
                 setTimeout(() => {
-                    alert('Incorrect move');
-                    setIncorrectMoves(incorrectMoves => incorrectMoves + 1)
-                    setTimeout(() => {
-                        setPuzzle();
-                    }, 1000);
-                }, 500);
-                return;
-            }
+                    setPuzzle();
+                }, 1000);
+            }, 500);
+            return;
+            } 
 
         } catch(e){}
 
         if (move === undefined) {
             resetFirstMove(source);
-            console.log("here a")
             return;
         }
         else{
             setMoveFrom("");
             setOptionSquares({});
+            //setNumOfMoves(numOfMoves => numOfMoves + 1)
             setAutomatedMove();
             return true;
         }
@@ -202,6 +206,8 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
 
     async function onSquareClick(square) {
         
+
+
         if (moveFrom === "") {
             resetFirstMove(square);
             return;
@@ -213,7 +219,8 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
                 to: square,
                 promotion: 'q',
             });
-
+            
+            /*
             if ((moveFrom+square) !== correctMoves[0]){
                 setOptionSquares({});
                 setTimeout(() => {
@@ -225,6 +232,7 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
                 }, 500);
                 return;
             }
+            */
         } catch(e){}
 
         if (move === undefined) {
