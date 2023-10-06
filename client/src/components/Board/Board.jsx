@@ -15,6 +15,7 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
     const [curPuzzleNumber,setCurPuzzleNumber] = useState(0);
     const [incorrectMoves,setIncorrectMoves] = useState(0);
     const [startState,setStartState] = useState(true);
+    const [numOfMoves, setNumOfMoves] = useState(0);
 
     // Sound effects
     const moveSound = new Audio('/move.mp3');
@@ -90,22 +91,31 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
         game.loadPgn(gameCopy.pgn())
         setGame(gameCopy);
         
-        // Make the opposing move to the puzzle
-        var correctmoves = puzzles.data[curPuzzleNumber].Moves.split(" ");
+        setAutomatedMove();
+    }
 
-        const firstMove = {
-            from: correctmoves[0].slice(0,2),
-            to: correctmoves[0].slice(2,4),
+    function setAutomatedMove(){
+        var correctmoves = puzzles.data[curPuzzleNumber].Moves.split(" ");
+        // Make the opposing move to the puzzle
+
+        const move = {
+            from: correctmoves[numOfMoves].slice(0,2),
+            to: correctmoves[numOfMoves].slice(2,4),
             promotion: 'q',
         };
-        
-        setCorrectMoves(correctmoves.slice(1));
 
+        setCorrectMoves(correctmoves.slice(1));
+        setNumOfMoves(numOfMoves => numOfMoves + 1)
+        
         setTimeout(() => {
-            makeAMove(firstMove)
+            makeAMove(move);
         }, 1200);
-    
-    }
+    } 
+
+    useEffect(()=>{
+        console.log(numOfMoves)
+    },[numOfMoves])
+
 
     function makeAMove(move) {
         const gameCopy = new Chess();
@@ -141,11 +151,13 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
 
         if (move === undefined) {
             resetFirstMove(source);
+            console.log("here a")
             return;
         }
         else{
             setMoveFrom("");
             setOptionSquares({});
+            setAutomatedMove();
             return true;
         }
     }
@@ -222,6 +234,7 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
         else{
             setMoveFrom("");
             setOptionSquares({});
+            setAutomatedMove();
             return true;
         }
     }
