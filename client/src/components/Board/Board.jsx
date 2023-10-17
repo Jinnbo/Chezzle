@@ -30,7 +30,6 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
         } else {
             moveSound.play();
         }
-        console.log(game.fen())
     },[game])
     
     useEffect(() => {
@@ -100,11 +99,11 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
         // Make the opposing move to the puzzle
         
         const move = {
-            from: correctmoves[numOfMoves].slice(0,2),
-            to: correctmoves[numOfMoves].slice(2,4),
+            from: correctmoves[0].slice(0,2),
+            to: correctmoves[0].slice(2,4),
         }; 
         
-        //console.log(correctmoves,numOfMoves, move)
+        console.log(correctmoves,numOfMoves, move)
         
         setCorrectMoves(correctmoves.slice(1));
         setNumOfMoves(numOfMoves => numOfMoves + 2);

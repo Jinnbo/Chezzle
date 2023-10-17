@@ -1,27 +1,6 @@
-## MVP 
-- [ ] Multiple puzzle options (mate in 1,2,3, pins, forks, skewers, etc)
-- [ ] Error/success message somewhere for each move 
-- [ ] Hint button 
-- [ ] Backward button
-- [ ] Forward button 
-- [ ] Screen responsiveness 
-- [ ] Host project 
+# Chezzle 
 
+A chess website featuring over 1,000,000 unique puzzles 
 
-### Running client
-    npm start
+## Demo
 
-### Running server
-    npm run server
-
-### API
-    GITHUBSTUDENT50-AZPFEI
-    8dGDYmEBj7AMECoI
-
-<br>
-Fold tailwindcss:
-
-- `ctrl+option+a`
-
-Add comment in jsx:
-- `option+shift+a`
