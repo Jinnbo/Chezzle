@@ -2,16 +2,18 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import router from './routes/index.js';
+import dotenv from 'dotenv';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+dotenv.config();
 
 app.listen(5000, async () => {
     mongoose.set("strictQuery",false);
     mongoose.connect(
-    'mongodb+srv://Jimmy:8dGDYmEBj7AMECoI@cluster0.tn1aa6o.mongodb.net/Puzzles',
+        process.env.MONGO_URI,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,

@@ -7,7 +7,7 @@ import './global.css'
 
 function App() {
 
-  const [category, setCategory] = useState("Mate in 2");
+  const [category, setCategory] = useState("Mate in 1");
   const [start, setStart] = useState(false);
   const [correct, setCorrect] = useState(0);
   const [incorrect, setIncorrect] = useState(0);
