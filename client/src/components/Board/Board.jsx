@@ -41,7 +41,7 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
         if (curPuzzleNumber > 0){
             setTimeout(() => {
                 alert('Complete');
-                setPuzzle();
+                initPuzzle();
             }, 1000); 
         }
     },[curPuzzleNumber])
@@ -49,42 +49,25 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
     useEffect(()=>{
 
         // Get the puzzle from the database
-        const getPuzzles = async () => {
-            switch(category){
-                case "Mate in 1":
-                    const data = await mateService.getMateIn1();
-                    setPuzzles(data);
-                    break;
-                case "Mate in 2":
-                    const data2 = await mateService.getMateIn2();
-                    setPuzzles(data2);
-                    break;
-                case "Mate in 3":
-                    const data3 = await mateService.getMateIn3();
-                    setPuzzles(data3);
-                    break;
-            }
-        };
-        getPuzzles();
+        const getPuzzle = async () => {
+            const mateIn1 = await mateService.getMateIn1();
+            setPuzzles(mateIn1);
+            console.log(mateIn1)
+        }
+        getPuzzle();
+
         if (start === true){
-            setPuzzle();
+            initPuzzle();
         }
     },[start])
 
-    // Reset board when switching to new game mode (category)
-    useEffect(()=>{
-        const gameCopy = new Chess();
-        setGame(gameCopy);
-        setStart(false);
-        setCurPuzzleNumber(0);
-        setIncorrectMoves(0);
-    },[category])
 
-
-    function setPuzzle(){
+    function initPuzzle(){
         setStartState(false);
         const randomFEN = puzzles.data[curPuzzleNumber].FEN;
         
+        console.log(randomFEN)
+
         // Set game to random puzzle
         const gameCopy = new Chess(randomFEN);
         game.loadPgn(gameCopy.pgn())
@@ -95,6 +78,7 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
 
     const [numOfMoves, setNumOfMoves] = useState(0);
     function setAutomatedMove(){
+
         var correctmoves = puzzles.data[curPuzzleNumber].Moves.split(" ");
         // Make the opposing move to the puzzle
         
@@ -102,8 +86,6 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
             from: correctmoves[0].slice(0,2),
             to: correctmoves[0].slice(2,4),
         }; 
-        
-        console.log(correctmoves,numOfMoves, move)
         
         setCorrectMoves(correctmoves.slice(1));
         setNumOfMoves(numOfMoves => numOfMoves + 2);
@@ -119,10 +101,9 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
             const gameCopy = new Chess();
             gameCopy.load(game.fen())
 
-            console.log(game.moves())
-
             const result = gameCopy.move(move);
             setGame(gameCopy);
+            
             return result; 
         } catch (e) {
             console.log(e)
@@ -144,7 +125,7 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
                 alert('Incorrect move');
                 setIncorrectMoves(incorrectMoves => incorrectMoves + 1)
                 setTimeout(() => {
-                    setPuzzle();
+                    initPuzzle();
                 }, 1000);
             }, 500);
             return;

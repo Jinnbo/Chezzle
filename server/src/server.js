@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import router from './routes/index.js';
 import dotenv from 'dotenv';
+import serverless from 'serverless-http'
 
 const app = express();
 app.use(cors());
@@ -30,8 +31,10 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.get('/', (req, res) => {
+app.get('/hello', (req, res) => {
     res.send('Hello World!');
 })
 
 app.use('/api', router);
+
+module.exports.handler = serverless(app);

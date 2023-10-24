@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const getMateIn1 = async => {
-    return axios.get("http://localhost:5000/api/mate/mateIn1", {crossdomain: true} )
+    return axios.get(process.env.REACT_APP_AWS_MATE_IN_1, {crossdomain: true} )
 }
 
 const getMateIn2 = async => {

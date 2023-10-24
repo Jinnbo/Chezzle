@@ -12,6 +12,7 @@ function App() {
   const [correct, setCorrect] = useState(0);
   const [incorrect, setIncorrect] = useState(0);
 
+
   return (
     <>
       <div className="appContainer">
