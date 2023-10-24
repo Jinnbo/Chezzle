@@ -1,7 +1,14 @@
 import React, {Component,useState, useEffect} from 'react';
 import './RightBox.css'
 
-export default function RightBox({category, start, setStart, correct, incorrect}){
+export default function RightBox({
+    category, 
+    start, 
+    setStart, 
+    correct, 
+    incorrect, 
+    rating,
+}){
 
     const onButtonClick = () => {
         setStart(!start);
@@ -10,8 +17,13 @@ export default function RightBox({category, start, setStart, correct, incorrect}
     return (
         <>
             <div className='flex flex-col justify-around w-[20rem] items-center bg-black rounded-3xl'>
-                <div className="text-white text-4xl font-bold">
-                     {category}
+                <div className="flex flex-col items-center text-white text-6xl font-bold gap-[2rem]">
+                    <div className="">
+                        {category}
+                    </div>
+                    <div className="text-3xl">
+                        Rating: {rating}
+                    </div>
                 </div>
 
                 <div className="flex justify-center items-center gap-[2rem] w-[5rem] h-[5rem]">
@@ -23,14 +35,16 @@ export default function RightBox({category, start, setStart, correct, incorrect}
                     <div className="incorrectScore text-white text-4xl">{incorrect}</div>
                 </div>
 
-                <div className="flex justify-between w-[16rem]">
-                    <img className='buttons w-[4rem] h-[2.5rem]' src='./backward.png'/>
-                    <img className='buttons w-[4rem] h-[2.5rem]' src='./hint.png'/>
-                    <img className='buttons w-[4rem] h-[2.5rem]' src='./forward.png'/>
-                </div>
+                        
+                <div className="flex flex-col gap-[2rem]">
+                    <div className="flex justify-between w-[16rem]">
+                        <img className='buttons w-[6rem] h-[3.5rem]' src='./backward.png'/>
+                        <img className='buttons w-[6rem] h-[3.5rem]' src='./forward.png'/>
+                    </div>
 
-                <div onClick={()=>onButtonClick()} className="restart flex justify-center rounded-md w-[16rem] h-[2.5rem] text-[1.5rem]">
-                   {start == false ? 'Start' : 'Restart'}
+                    <div onClick={()=>onButtonClick()} className="restart flex justify-center items-center rounded-md w-[16rem] h-[3.5rem] text-[2rem]">
+                    {start == false ? 'Start' : 'Restart'}
+                    </div>
                 </div>
             </div>
         </>

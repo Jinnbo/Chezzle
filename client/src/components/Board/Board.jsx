@@ -4,7 +4,14 @@ import { Chessboard } from "react-chessboard";
 import { mateService } from '../../services/mate.service';
 import './Board.css';
 
-export default function Board({category, start, setCorrect, setIncorrect, setStart}){    
+export default function Board({
+    category,
+    start, 
+    setCorrect, 
+    setIncorrect, 
+    setStart,
+    setRating,
+}){    
 
     // Game states
     const [game, setGame] = useState(new Chess());
@@ -52,7 +59,6 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
         const getPuzzle = async () => {
             const mateIn1 = await mateService.getMateIn1();
             setPuzzles(mateIn1);
-            console.log(mateIn1)
         }
         getPuzzle();
 
@@ -65,8 +71,8 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
     function initPuzzle(){
         setStartState(false);
         const randomFEN = puzzles.data[curPuzzleNumber].FEN;
-        
-        console.log(randomFEN)
+
+        setRating(puzzles.data[curPuzzleNumber].Rating)
 
         // Set game to random puzzle
         const gameCopy = new Chess(randomFEN);
@@ -236,7 +242,7 @@ export default function Board({category, start, setCorrect, setIncorrect, setSta
 
     return (
         <>  
-            <div className='boardContainer border-2 w-[35vw]'>
+            <div className='boardContainer border-2 w-[50vw]'>
                 <Chessboard
                     position={game.fen()}
                     onPieceDrop={onDrop}

@@ -11,6 +11,7 @@ function App() {
   const [start, setStart] = useState(false);
   const [correct, setCorrect] = useState(0);
   const [incorrect, setIncorrect] = useState(0);
+  const [rating, setRating] = useState(0);
 
 
   return (
@@ -18,9 +19,8 @@ function App() {
       <div className="appContainer">
         <Navbar/>
         <div className="flex justify-around mt-[4rem]">
-          <LeftBox setCategory={setCategory}/>
-          <Board category={category} start={start} setCorrect={setCorrect} setStart={setStart} setIncorrect={setIncorrect}/>
-          <RightBox category={category} start={start} setStart={setStart} correct={correct} incorrect={incorrect}/>
+          <Board category={category} start={start} setCorrect={setCorrect} setStart={setStart} setIncorrect={setIncorrect} setRating={setRating}/>
+          <RightBox category={category} start={start} setStart={setStart} correct={correct} incorrect={incorrect} rating={rating}/>
         </div>
       </div>  
     </>
