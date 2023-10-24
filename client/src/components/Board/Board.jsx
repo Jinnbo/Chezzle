@@ -7,10 +7,15 @@ import './Board.css';
 export default function Board({
     category,
     start, 
+    setStart,
+    correct,
     setCorrect, 
     setIncorrect, 
-    setStart,
     setRating,
+    forward,
+    setForward,
+    backward,
+    setBackward
 }){    
 
     // Game states
@@ -29,6 +34,8 @@ export default function Board({
     const castleSound = new Audio('/castle.mp3');
     const checkSound = new Audio('/check.mp3');
     
+    /****************************** Use Effect ******************************/
+
     useEffect(()=>{
         //else moveSound.play()
         if (game.isCheckmate()){
@@ -40,21 +47,21 @@ export default function Board({
     },[game])
     
     useEffect(() => {
-        setCorrect(curPuzzleNumber)
-        setIncorrect(incorrectMoves)
-    }, [curPuzzleNumber,incorrectMoves]);
+        setIncorrect(incorrectMoves);
+    }, [incorrectMoves]);
 
     useEffect(()=>{        
-        if (curPuzzleNumber > 0){
+        if (game.isCheckmate()){
             setTimeout(() => {
+                setCorrect(correct + 1)
                 alert('Complete');
                 initPuzzle();
-            }, 1000); 
+            }, 600); 
         }
+
     },[curPuzzleNumber])
 
     useEffect(()=>{
-
         // Get the puzzle from the database
         const getPuzzle = async () => {
             const mateIn1 = await mateService.getMateIn1();
@@ -67,9 +74,27 @@ export default function Board({
         }
     },[start])
 
+    useEffect(()=>{
+        if (forward){
+            setCurPuzzleNumber(curPuzzleNumber => curPuzzleNumber + 1);
+            initPuzzle();
+            setForward(false);
+        }
+    },[forward,curPuzzleNumber])
+
+    useEffect(()=>{
+        if (backward && curPuzzleNumber > 0){
+            setCurPuzzleNumber(curPuzzleNumber => curPuzzleNumber - 1)
+            initPuzzle();
+            setBackward(false);
+        }
+    },[backward])
+
+    /*************************************************************************/
 
     function initPuzzle(){
         setStartState(false);
+        console.log("init puzzle " +  curPuzzleNumber)
         const randomFEN = puzzles.data[curPuzzleNumber].FEN;
 
         setRating(puzzles.data[curPuzzleNumber].Rating)
@@ -191,8 +216,6 @@ export default function Board({
 
 
     async function onSquareClick(square) {
-        
-
 
         if (moveFrom === "") {
             resetFirstMove(square);
@@ -205,15 +228,15 @@ export default function Board({
                 to: square,
                 promotion: 'q',
             });
-            
             /*
-            if ((moveFrom+square) !== correctMoves[0]){
+            if ((moveFrom + square) !== correctMoves[0]){
                 setOptionSquares({});
+                setMoveFrom("");
                 setTimeout(() => {
                     alert('Incorrect move');
-                    setIncorrectMoves(incorrectMoves => incorrectMoves + 1)
+                    setIncorrectMoves(incorrectMoves + 1)
                     setTimeout(() => {
-                        setPuzzle();
+                        initPuzzle();
                     }, 1000);
                 }, 500);
                 return;

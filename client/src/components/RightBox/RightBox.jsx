@@ -8,11 +8,21 @@ export default function RightBox({
     correct, 
     incorrect, 
     rating,
+    setForward,
+    setBackward
 }){
 
     const onButtonClick = () => {
         setStart(!start);
     } 
+    
+    const onForwardClick = () => {
+        setForward(true);
+    }
+
+    const onBackwardClick = () => {
+        setBackward(true);
+    }
 
     return (
         <>
@@ -38,8 +48,12 @@ export default function RightBox({
                         
                 <div className="flex flex-col gap-[2rem]">
                     <div className="flex justify-between w-[16rem]">
-                        <img className='buttons w-[6rem] h-[3.5rem]' src='./backward.png'/>
-                        <img className='buttons w-[6rem] h-[3.5rem]' src='./forward.png'/>
+                        <div onClick={()=>onBackwardClick()}>
+                            <img className='buttons w-[6rem] h-[3.5rem]' src='./backward.png'/>
+                        </div>
+                        <div onClick={()=>onForwardClick()}>
+                            <img className='buttons w-[6rem] h-[3.5rem]' src='./forward.png'/>
+                        </div>
                     </div>
 
                     <div onClick={()=>onButtonClick()} className="restart flex justify-center items-center rounded-md w-[16rem] h-[3.5rem] text-[2rem]">
