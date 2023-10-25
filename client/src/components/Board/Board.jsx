@@ -54,7 +54,7 @@ export default function Board({
         if (game.isCheckmate()){
             setTimeout(() => {
                 setCorrect(correct + 1)
-                alert('Complete');
+                //alert('Complete');
                 initPuzzle();
             }, 600); 
         }
@@ -69,9 +69,10 @@ export default function Board({
         }
         getPuzzle();
 
-        if (start === true){
+        if (start === true || curPuzzleNumber > 0){
             initPuzzle();
         }
+
     },[start])
 
     useEffect(()=>{
@@ -94,7 +95,6 @@ export default function Board({
 
     function initPuzzle(){
         setStartState(false);
-        console.log("init puzzle " +  curPuzzleNumber)
         const randomFEN = puzzles.data[curPuzzleNumber].FEN;
 
         setRating(puzzles.data[curPuzzleNumber].Rating)
@@ -138,6 +138,7 @@ export default function Board({
             return result; 
         } catch (e) {
             console.log(e)
+            return false
         }
     }
 
@@ -153,7 +154,7 @@ export default function Board({
            if ((source+target) !== correctMoves[0]){
             setOptionSquares({});
             setTimeout(() => {
-                alert('Incorrect move');
+                //alert('Incorrect move');
                 setIncorrectMoves(incorrectMoves => incorrectMoves + 1)
                 setTimeout(() => {
                     initPuzzle();
@@ -228,12 +229,13 @@ export default function Board({
                 to: square,
                 promotion: 'q',
             });
-            /*
-            if ((moveFrom + square) !== correctMoves[0]){
+
+
+            if ((moveFrom + square) !== correctMoves[0] && move !== false){
                 setOptionSquares({});
                 setMoveFrom("");
                 setTimeout(() => {
-                    alert('Incorrect move');
+                    //alert('Incorrect move');
                     setIncorrectMoves(incorrectMoves + 1)
                     setTimeout(() => {
                         initPuzzle();
@@ -241,7 +243,7 @@ export default function Board({
                 }, 500);
                 return;
             }
-            */
+            
         } catch(e){}
 
         if (move === undefined) {
@@ -256,15 +258,20 @@ export default function Board({
         }
     }
 
-    function undoMove(){
-        const gameCopy = new Chess();
-        gameCopy.loadPgn(game.pgn())
-        gameCopy.undo();
-        setGame(gameCopy);
+    if (start === false && curPuzzleNumber === 0) {
+        console.log("HERE")
+        return (
+            <>  
+            <div className='boardContainer border-2 w-[50vw]'>
+                <Chessboard
+                />
+            </div>
+            </>
+        )  
     }
-
-    return (
-        <>  
+    else {
+        return (
+            <>
             <div className='boardContainer border-2 w-[50vw]'>
                 <Chessboard
                     position={game.fen()}
@@ -273,52 +280,9 @@ export default function Board({
                     customSquareStyles={{...optionSquares}}
                 />
             </div>
-        </>
-    );
+            </>
+        )
+    }
 }
 
 
-/*
-
-            switch(category){
-                case "Mate in 1":
-                    const data = await mateService.getMateIn1();
-                    setPuzzles(data);
-                    break;
-                case "Mate in 2":
-                    const data2 = await mateService.getMateIn2();
-                    setPuzzles(data2);
-                    break;
-                case "Mate in 3":
-                    const data3 = await mateService.getMateIn3();
-                    setPuzzles(data3);
-                    break;
-            }
-
-
-                <div className='leftContainer'>
-                    <div className='username'>
-                        NAME
-                    </div>
-                    <div className='userIcon'>
-                    </div>
-                    <div className='userRank'>
-                        #1
-                    </div>  
-                    <div className='scoreContainer'>
-                        <div className='correctContainer'>
-                            <img src={require('../../assets/correct.png')} className='correctIcon'></img>
-                            <div className='correctScore'>{curPuzzleNumber}</div>
-                        </div>
-                        <div className='incorrectContainer'>
-                            <img src={require('../../assets/incorrect.png')} className='incorrectIcon'></img>
-                            <div className='incorrectScore'>{incorrectMoves}</div>
-                        </div>
-                    </div>
-                    <div className='btnContainer'>
-                        <button className='startBTN' onClick={setPuzzle}>{startState === true ? "Start" : "Restart"}</button>
-                       
-                    </div>
-                </div>
-
-*/

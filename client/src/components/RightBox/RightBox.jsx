@@ -11,10 +11,17 @@ export default function RightBox({
     setForward,
     setBackward
 }){
+    const [state,setState] = useState("Start")
 
     const onButtonClick = () => {
         setStart(!start);
     } 
+
+    useEffect(()=>{
+        if (start === true && correct === 0 & incorrect === 0){
+            setState("Restart")
+        }
+    },[start])
     
     const onForwardClick = () => {
         setForward(true);
@@ -57,7 +64,7 @@ export default function RightBox({
                     </div>
 
                     <div onClick={()=>onButtonClick()} className="restart flex justify-center items-center rounded-md w-[16rem] h-[3.5rem] text-[2rem]">
-                    {start == false ? 'Start' : 'Restart'}
+                    {state}
                     </div>
                 </div>
             </div>
