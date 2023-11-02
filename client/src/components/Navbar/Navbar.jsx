@@ -9,7 +9,7 @@ export default function Navbar(){
                     <img src='./logo.png' className='h-[3rem] w-[3rem]'/>
                 </div>
                 <div className='text-white text-[2rem] font-bold'>
-                    Chezzles
+                    Chezzle
                 </div>
             </div>
         

@@ -1,11 +1,19 @@
+import React, { useEffect, useState } from 'react';
 import Board from "./components/Board/Board";
 import Navbar from "./components/Navbar/Navbar";
 import LeftBox from "./components/LeftBox/LeftBox";
 import RightBox from "./components/RightBox/RightBox";
-import { useState } from "react";
+import useWindowDimensions from '../src/Modules/WindowDimension'
 import './global.css'
 
+
 function App() {
+
+  const {height, width} = useWindowDimensions()
+
+  useEffect(()=>{
+    document.title = "Chezzle"
+  },[])
 
   const [category, setCategory] = useState("Mate in 1");
   const [start, setStart] = useState(false);
@@ -19,6 +27,10 @@ function App() {
     <>
       <div className="appContainer">
         <Navbar/>
+        {/* <div className="">
+          height: {height} <br/>
+          width: {width}
+        </div> */}
         <div className="flex justify-around mt-[4rem]">
           <Board 
             category={category} 
@@ -44,7 +56,7 @@ function App() {
             rating={rating}
             setForward={setForward}
             setBackward={setBackward}
-          />
+          /> 
         </div>
       </div>  
     </>

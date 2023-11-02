@@ -262,7 +262,7 @@ export default function Board({
         console.log("HERE")
         return (
             <>  
-            <div className='boardContainer border-2 w-[50vw]'>
+            <div className='boardContainer'>
                 <Chessboard
                 />
             </div>
@@ -272,7 +272,7 @@ export default function Board({
     else {
         return (
             <>
-            <div className='boardContainer border-2 w-[50vw]'>
+            <div className='boardContainer'>
                 <Chessboard
                     position={game.fen()}
                     onPieceDrop={onDrop}
