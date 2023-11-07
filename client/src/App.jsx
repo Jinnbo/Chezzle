@@ -23,17 +23,22 @@ function App() {
   const [rating, setRating] = useState(0);
   const [forward, setForward] = useState(false);
   const [backward, setBackward] = useState(false);
+  const [help, setHelp] = useState(true);
+
+  useEffect(()=>{
+    console.log(help)
+  },[help])
 
   return (
     <>
       <div className="appContainer">
-        <Navbar/>
+        <Navbar setHelp={setHelp} />
         {/* <div className="">
           height: {height} <br/>
           width: {width}
         </div> */}
-
-        <IntroductionModal/>
+      
+        <IntroductionModal setHelp={setHelp} help={help}/>
 
         <div className="flex justify-around mt-[4rem]">
           <Board 

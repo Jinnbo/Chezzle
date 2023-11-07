@@ -1,19 +1,15 @@
 import React from "react";
 
-export const IntroductionModal = ({BTNTitle}) => {
-    const [showModal, setShowModal] = React.useState(true);
+export const IntroductionModal = ({setHelp,help}) => {
 
-    const handleFormSubmit = (event) => {
-        event.preventDefault(); 
-        setShowModal(false)
-    };
+    const onButtonClick = () => {
+        setHelp(false);
+    }
 
     return (
         <>
-            <button class="button" type='button' onClick={() => setShowModal(true)}>
-            <span class="button-content">{BTNTitle}</span>
-            </button>
-            {showModal ? (
+
+            {help ? (
                 <>
                 <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 ">
                     <div className="relative w-auto my-6 mx-auto max-w-[50vw] modalContainer">
@@ -26,7 +22,7 @@ export const IntroductionModal = ({BTNTitle}) => {
                                 </h3>
                                 <button
                                     className="p-1 ml-auto bg-transparent border-0 text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                                    onClick={() => setShowModal(false)}
+                                    onClick={() => onButtonClick()}
                                 >
                                     <span className="bg-transparent text-black h-10 w-10 text-2xl block outline-none focus:outline-none">
                                     ×

@@ -1,3 +1,7 @@
 .navContainer{
     border-bottom: 2px grey solid;
 }
+
+.help:hover{
+    cursor: pointer;
+}

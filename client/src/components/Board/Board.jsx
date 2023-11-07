@@ -259,7 +259,6 @@ export default function Board({
     }
 
     if (start === false && curPuzzleNumber === 0) {
-        console.log("HERE")
         return (
             <>  
             <div className='boardContainer'>

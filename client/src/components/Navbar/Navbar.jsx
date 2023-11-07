@@ -1,7 +1,12 @@
 import React, {Component,useState, useEffect} from 'react';
 import './Navbar.css'
 
-export default function Navbar(){
+export default function Navbar({setHelp, help}){
+
+    const onButtonClick = () => {
+        setHelp(true);
+    } 
+
     return (
         <>
             <div className='navContainer flex justify-between p-[1rem] pl-[2rem] pr-[2rem] bg-black gap-[0.5rem]'>
@@ -15,12 +20,10 @@ export default function Navbar(){
                     </div>
                 </div>
 
-                <div className="text-white text-[2rem] font-bold">
-                    Info
+                <div onClick={()=>onButtonClick()} className="help text-white text-[2rem] font-bold">
+                    Help
                 </div>
-
             </div>
-        
         </>
     );
 }
