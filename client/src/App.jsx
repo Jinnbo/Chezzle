@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar/Navbar";
 import LeftBox from "./components/LeftBox/LeftBox";
 import RightBox from "./components/RightBox/RightBox";
 import useWindowDimensions from '../src/Modules/WindowDimension'
+import {IntroductionModal} from './components/Modals/IntroductionModal';
 import './global.css'
 
 
@@ -31,6 +32,9 @@ function App() {
           height: {height} <br/>
           width: {width}
         </div> */}
+
+        <IntroductionModal/>
+
         <div className="flex justify-around mt-[4rem]">
           <Board 
             category={category} 
