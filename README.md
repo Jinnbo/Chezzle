@@ -49,12 +49,14 @@
 <!-- ROADMAP -->
 ## Roadmap
 
+- [x] Create an information tab and information modal
 - [ ] Add support for other puzzle categories
   - [ ] Mate in 2
   - [ ] Mate in 3
   - [ ] Pins
   - [ ] Skewers
   - [ ] Forks
+- [x] Make it responsive for laptop and large screens
 - [ ] Make it mobile responsive
 - [ ] Fix the bug with the backward button
 - [ ] Add a hint button
